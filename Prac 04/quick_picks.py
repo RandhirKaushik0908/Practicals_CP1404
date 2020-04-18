@@ -3,6 +3,8 @@ from random import randint
 
 def main():
     num_of_picks = int(input("Enter the number of quick picks: "))
+    while num_of_picks < 0:
+        num_of_picks = int(input("Invalid Input! Enter the number of quick picks: "))
     for i in range(num_of_picks):
         quick_pick = []
         for j in range(6):
@@ -11,9 +13,8 @@ def main():
                 random_num = randint(1, 45)
             quick_pick.append(random_num)
         quick_pick.sort()
-        result = ("{:2}".format(num) for num in quick_pick)
+        result = (" ".join("{:2}".format(num) for num in quick_pick))
         print(result)
-        print()
 
 
 main()
