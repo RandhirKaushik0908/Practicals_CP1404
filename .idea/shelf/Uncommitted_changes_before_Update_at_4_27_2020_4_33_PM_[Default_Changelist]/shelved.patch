@@ -1,0 +1,159 @@
+Index: songs-to-learn-1-0-RandhirKaushik0908/assignment1.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"\r\nReplace the contents of this module docstring with your own details\r\nName: Randhir Kaushik 13893872\r\nDate started: - 18/04/2020 7.45 pm to 8\r\n              - 19/04/2020 10.15 pm to\r\n              -\r\n              -\r\nGitHub URL:\r\n\"\"\"\r\nsongs_input = open('songs.csv', 'r')\r\n\r\n\r\ndef main():\r\n    \"\"\"...\"\"\"\r\n    MENU = \"Menu:\\nL - List songs\\nA - Add new song\\nC - Complete a song\\nQ - Quit\"\r\n    songs_list = get_songs()\r\n    print(\"Songs to Learn 1.0 - by Randhir Kaushik\")\r\n    print(MENU)\r\n    menu_input = input(\">>>\\t\").upper()\r\n    if menu_input == 'L':\r\n        show_songs(songs_list)\r\n    elif menu_input == 'A':\r\n        song_num = int(input(\"Enter the number of a song to mark as learned\\n>>>\\t\"))\r\n        songs_list[song_num][3] = 'l'\r\n        print(\"{} by {} learned.\".format(songs_list[song_num][0], songs_list[song_num][1]))\r\n\r\n\r\ndef show_songs(songs_list):\r\n    learned_songs_num = 0\r\n    for i in range(len(songs_list)):\r\n        if songs_list[i][3] == 'l':\r\n            songs_list[i][3] = '*'\r\n            learned_songs_num += 1\r\n        else:\r\n            songs_list[i][3] = ' '\r\n        print(\"{}. {} {:<30}- {:<30} ({})\".format(i, songs_list[i][3], songs_list[i][0], songs_list[i][1],\r\n                                                  songs_list[i][2]))\r\n    unlearned_songs_num = len(songs_list) - learned_songs_num\r\n    print(\"{} songs learned, {} songs still to learn\".format(learned_songs_num, unlearned_songs_num))\r\n\r\n\r\ndef get_songs():\r\n    songs_details = []\r\n    for line in songs_input:\r\n        songs_details.append(line.strip().split('\\t'))\r\n    return songs_details\r\n\r\n\r\nmain()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- songs-to-learn-1-0-RandhirKaushik0908/assignment1.py	(revision 56d1ef1f5a513c32f95f70e43f32cfbcaeea1bf3)
++++ songs-to-learn-1-0-RandhirKaushik0908/assignment1.py	(date 1587969161767)
+@@ -2,12 +2,13 @@
+ Replace the contents of this module docstring with your own details
+ Name: Randhir Kaushik 13893872
+ Date started: - 18/04/2020 7.45 pm to 8
+-              - 19/04/2020 10.15 pm to
+-              -
++              - 19/04/2020 10.15 pm to 2
++              - 20/04/2020
+               -
+ GitHub URL:
+ """
+-songs_input = open('songs.csv', 'r')
++from operator import itemgetter
++songs_input = open('songs.csv', 'r+')
+ 
+ 
+ def main():
+@@ -16,34 +17,98 @@
+     songs_list = get_songs()
+     print("Songs to Learn 1.0 - by Randhir Kaushik")
+     print(MENU)
+-    menu_input = input(">>>\t").upper()
+-    if menu_input == 'L':
+-        show_songs(songs_list)
+-    elif menu_input == 'A':
+-        song_num = int(input("Enter the number of a song to mark as learned\n>>>\t"))
+-        songs_list[song_num][3] = 'l'
+-        print("{} by {} learned.".format(songs_list[song_num][0], songs_list[song_num][1]))
++    menu_range = ['A', 'L', 'C', 'Q']
++    menu_input = input("Enter the option\n>>>\t").upper()
++    while menu_input not in menu_range:
++        menu_input = input("Sorry! Invalid menu choice\n>>>\t").upper()
++    while menu_input != 'Q':
++        if menu_input == 'L':
++            show_songs(songs_list)
++        elif menu_input == 'C':
++            complete_song(songs_list)
++        elif menu_input == 'A':
++            add_song(songs_list)
++        print(MENU)
++        menu_input = input("Enter the option\n>>>\t").upper()
++        while menu_input not in menu_range:
++            menu_input = input("Sorry! Invalid menu choice\n>>>\t").upper()
++    if menu_input == 'Q':
++        for j in range(len(songs_list)):
++            print("{},{},{},{}\n".format(*songs_list[j]), file=songs_input)
++        print("{} songs saved to songs.csv".format(len(songs_list)))
++        print('Have a nice day :)')
++
++
++def add_song(songs_list):
++    songs_details = []
++    title_prompt = "title of the song"
++    title = get_song_info(title_prompt)
++    artist_prompt = "name of the song artist"
++    artist = get_song_info(artist_prompt)
++    year_prompt = "year of the release"
++    year = get_song_info(year_prompt)
++    songs_details.append(title)
++    songs_details.append(artist)
++    songs_details.append(year)
++    songs_details.append('u')
++    songs_list.append(songs_details)
++    print("{} by {} ({}) added to the list.".format(title, artist, year))
++
++
++def get_song_info(prompt):
++    info = input("Please enter the " + prompt + "\n>>>\t")
++    while len(info) == 0:
++        print('Input cannot be blank.')
++        info = input("Please enter the " + prompt + "\n>>>\t")
++    return info
++
++
++def complete_song(songs_list):
++    MIN = 0
++    MAX = len(songs_list) - 1
++    learned_songs_num = 0
++    for i in range(MAX + 1):
++        if songs_list[i][3] == 'l':
++            learned_songs_num += 1
++    if learned_songs_num < MAX + 1:
++        num_of_song = input("Enter the number of a song to mark as learned\n>>>\t")
++        while not num_of_song.isdigit() or int(num_of_song) < MIN or int(num_of_song) > MAX:
++            print("Sorry! Input should be number in range.")
++            num_of_song = input("Enter the number of a song to mark as learned\n>>>\t")
++        song_num = int(num_of_song)
++        if songs_list[song_num][3] == 'u':
++            songs_list[song_num][3] = 'l'
++            print("{} by {} learned.".format(songs_list[song_num][0], songs_list[song_num][1]))
++        else:
++            print("Song already learned.")
++    else:
++        print("No songs to learn.")
+ 
+ 
+ def show_songs(songs_list):
++    songs_list.sort(key=itemgetter(1, 0))
+     learned_songs_num = 0
+     for i in range(len(songs_list)):
+         if songs_list[i][3] == 'l':
+-            songs_list[i][3] = '*'
++            learned_status = ' '
+             learned_songs_num += 1
+         else:
+-            songs_list[i][3] = ' '
+-        print("{}. {} {:<30}- {:<30} ({})".format(i, songs_list[i][3], songs_list[i][0], songs_list[i][1],
++            learned_status = '*'
++        print("{}. {} {:<30}- {:<30} ({})".format(i, learned_status, songs_list[i][0], songs_list[i][1],
+                                                   songs_list[i][2]))
+     unlearned_songs_num = len(songs_list) - learned_songs_num
+-    print("{} songs learned, {} songs still to learn".format(learned_songs_num, unlearned_songs_num))
++    if unlearned_songs_num == 0:
++        print("All songs learned.")
++    else:
++        print("{} songs learned, {} songs still to learn".format(learned_songs_num, unlearned_songs_num))
+ 
+ 
+ def get_songs():
+     songs_details = []
+     for line in songs_input:
+-        songs_details.append(line.strip().split('\t'))
++        songs_details.append(line.strip('\n').split(','))
+     return songs_details
+ 
+ 
+ main()
++songs_input.close()
+Index: songs-to-learn-1-0-RandhirKaushik0908/songs.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>Somebody That I Used to Know,Gotye featuring Kimbra,2012,u\r\nHeartbreak Hotel,Elvis Presley,1956,u\r\nMacarena,Los Del Rio,1996,l\r\nI Want to Hold Your Hand,The Beatles,1964,u\r\nBoom Boom Pow,The Black Eyed Peas,2009,u\r\nMy Sharona,The Knack,1979,l\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- songs-to-learn-1-0-RandhirKaushik0908/songs.csv	(revision 56d1ef1f5a513c32f95f70e43f32cfbcaeea1bf3)
++++ songs-to-learn-1-0-RandhirKaushik0908/songs.csv	(date 1587969176937)
+@@ -1,6 +1,6 @@
+-Somebody That I Used to Know,Gotye featuring Kimbra,2012,u
+-Heartbreak Hotel,Elvis Presley,1956,u
+-Macarena,Los Del Rio,1996,l
+-I Want to Hold Your Hand,The Beatles,1964,u
+-Boom Boom Pow,The Black Eyed Peas,2009,u
+-My Sharona,The Knack,1979,l
++Somebody That I Used to Know	Gotye featuring Kimbra	2012	u
++Heartbreak Hotel	Elvis Presley	1956	u
++Macarena	Los Del Rio	1996	l
++I Want to Hold Your Hand	The Beatles	1964	u
++Boom Boom Pow	The Black Eyed Peas	2009	u
++My Sharona	The Knack	1979	l
