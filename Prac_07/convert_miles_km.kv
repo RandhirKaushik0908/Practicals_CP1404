@@ -1,0 +1,24 @@
+BoxLayout:
+    orientation: 'vertical'
+    BoxLayout:
+        orientation: 'horizontal'
+        TextInput:
+            id: input_value
+            text: '8.0'
+            font_size: 48
+            multiline: False
+        BoxLayout:
+            orientation: 'vertical'
+            Button:
+                text: 'Up'
+                on_press: app.change_value(float(input_value.text), 1)
+            Button:
+                text: 'Down'
+                on_press: app.change_value(float(input_value.text), -1)
+    Button:
+        text: 'Convert miles to km'
+        on_press: app.handle_calculations(float(input_value.text))
+    Label:
+        text: app.output
+        font_size: 48
+
