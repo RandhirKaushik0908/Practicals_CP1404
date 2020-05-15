@@ -20,7 +20,7 @@ class DynamicLabelsApp(App):
     def create_labels(self):
         for name in self.names:
             label_widget = Label(text=name)
-            self.root.ids.labels.addwidget(label_widget)
+            self.root.ids.labels.add_widget(label_widget)
 
 
 DynamicLabelsApp().run()
