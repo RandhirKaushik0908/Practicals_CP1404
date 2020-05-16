@@ -1,4 +1,9 @@
 BoxLayout:
     orientation: 'vertical'
-    id: labels
-    text: app.display_text
+    BoxLayout:
+        orientation: 'vertical'
+        # this layout is populated with Button widgets in app code
+        id: labels
+    Label:
+        size_hint_y: 0.1
+        text: app.display_text
