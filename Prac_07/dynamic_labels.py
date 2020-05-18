@@ -1,11 +1,9 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.label import Label
-from kivy.properties import StringProperty
 
 
 class DynamicLabelsApp(App):
-    display_text = StringProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -19,8 +17,7 @@ class DynamicLabelsApp(App):
 
     def create_labels(self):
         for name in self.names:
-            label_widget = Label(text=name)
-            self.root.ids.labels.add_widget(label_widget)
+            self.root.ids.labels.add_widget(Label(text=name))
 
 
 DynamicLabelsApp().run()
