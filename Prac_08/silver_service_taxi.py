@@ -3,7 +3,7 @@ from Prac_08.taxi import Taxi
 
 class SilverServiceTaxi(Taxi):
     """ A specialized and fancier type of taxi(and ultimately, car). """
-    flagfall = 4.50     # class variable
+    flagfall = 4.50  # class variable
 
     def __init__(self, name, fuel, fanciness=0.0):
         """ Initialise an instance of Silver Service taxi, based on the parent class Taxi(Car)."""
