@@ -15,9 +15,12 @@ def main():
             current_taxi, bill = choose_taxi(total_bill)
             total_bill += bill
         elif user_input == 'd':
-            bill = drive_taxi(current_taxi)
-            print("Your bill for this trip: ${}".format(bill))
-            total_bill += bill
+            if current_taxi is None:
+                print("Please select a taxi first!")
+            else:
+                bill = drive_taxi(current_taxi)
+                print("Your bill for this trip: ${}".format(bill))
+                total_bill += bill
         else:
             print("Invalid Input! Choose from the given menu choices only.")
         print("Your bill-to-date: $", total_bill)
