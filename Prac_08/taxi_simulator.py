@@ -2,7 +2,6 @@ from Prac_08.silver_service_taxi import SilverServiceTaxi
 from Prac_08.taxi import Taxi
 
 TAXIS = [Taxi("Prius", 100), SilverServiceTaxi("Limo", 100, 2), SilverServiceTaxi("Hummer", 200, 4)]
-# error checking loops left
 
 
 def main():
